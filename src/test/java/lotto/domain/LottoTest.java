@@ -29,7 +29,7 @@ class LottoTest {
     void createLottoWithValidNumbers() {
         List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6);
         Lotto lotto = new Lotto(numbers);
-        assertThat(lotto.getNumbers()).hasSize(6);
+        assertThat(lotto.format()).contains("1", "2", "3", "4", "5", "6");
     }
 
     @Test

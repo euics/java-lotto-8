@@ -19,7 +19,7 @@ public class OutputHandler {
     }
 
     public void printLottos(List<Lotto> lottos) {
-        lottos.forEach(lotto -> System.out.println(lotto.getNumbers()));
+        lottos.forEach(lotto -> System.out.println(lotto.format()));
         System.out.println();
     }
 
@@ -35,21 +35,11 @@ public class OutputHandler {
         System.out.println();
         System.out.println(STATISTICS_TITLE);
         System.out.println(STATISTICS_DIVIDER);
-        printRank(LottoRank.FIFTH, statistics.getCount(LottoRank.FIFTH));
-        printRank(LottoRank.FOURTH, statistics.getCount(LottoRank.FOURTH));
-        printRank(LottoRank.THIRD, statistics.getCount(LottoRank.THIRD));
-        printRank(LottoRank.SECOND, statistics.getCount(LottoRank.SECOND));
-        printRank(LottoRank.FIRST, statistics.getCount(LottoRank.FIRST));
+        statistics.forEachRank(this::printRank);
         System.out.println(String.format(RETURN_RATE_FORMAT, statistics.calculateReturnRate()));
     }
 
     private void printRank(LottoRank rank, int count) {
-        if (rank == LottoRank.SECOND) {
-            System.out.println(String.format(RANK_WITH_BONUS_FORMAT, rank.getMatchCount(), rank.getPrize(), count));
-
-            return;
-        }
-
-        System.out.println(String.format(RANK_FORMAT, rank.getMatchCount(), rank.getPrize(), count));
+        rank.format(RANK_FORMAT, RANK_WITH_BONUS_FORMAT, count, System.out::println);
     }
 }
