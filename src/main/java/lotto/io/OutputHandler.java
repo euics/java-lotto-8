@@ -35,11 +35,10 @@ public class OutputHandler {
         System.out.println();
         System.out.println(STATISTICS_TITLE);
         System.out.println(STATISTICS_DIVIDER);
-        statistics.forEachRank(this::printRank);
+        statistics.rankOrder().forEach(rank -> {
+                    int count = statistics.countRank(rank);
+                    System.out.println(rank.formatRank(RANK_FORMAT, RANK_WITH_BONUS_FORMAT, count));
+                });
         System.out.println(String.format(RETURN_RATE_FORMAT, statistics.calculateReturnRate()));
-    }
-
-    private void printRank(LottoRank rank, int count) {
-        rank.format(RANK_FORMAT, RANK_WITH_BONUS_FORMAT, count, System.out::println);
     }
 }
