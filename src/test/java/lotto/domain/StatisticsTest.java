@@ -4,7 +4,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static lotto.constant.Constants.LOTTO_PRICE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,11 +23,14 @@ class StatisticsTest {
 
         Statistics statistics = Statistics.calculate(lottos, winningLotto, bonusNumber);
 
-        assertThat(statistics.getCount(LottoRank.FIRST)).isEqualTo(1);
-        assertThat(statistics.getCount(LottoRank.SECOND)).isEqualTo(0);
-        assertThat(statistics.getCount(LottoRank.THIRD)).isEqualTo(0);
-        assertThat(statistics.getCount(LottoRank.FOURTH)).isEqualTo(0);
-        assertThat(statistics.getCount(LottoRank.FIFTH)).isEqualTo(0);
+        Map<LottoRank, Integer> counts = new HashMap<>();
+        statistics.forEachRank(counts::put);
+
+        assertThat(counts.get(LottoRank.FIRST)).isEqualTo(1);
+        assertThat(counts.get(LottoRank.SECOND)).isEqualTo(0);
+        assertThat(counts.get(LottoRank.THIRD)).isEqualTo(0);
+        assertThat(counts.get(LottoRank.FOURTH)).isEqualTo(0);
+        assertThat(counts.get(LottoRank.FIFTH)).isEqualTo(0);
     }
 
     @Test
@@ -39,9 +44,12 @@ class StatisticsTest {
 
         Statistics statistics = Statistics.calculate(lottos, winningLotto, bonusNumber);
 
-        assertThat(statistics.getCount(LottoRank.FIRST)).isEqualTo(0);
-        assertThat(statistics.getCount(LottoRank.SECOND)).isEqualTo(1);
-        assertThat(statistics.getCount(LottoRank.THIRD)).isEqualTo(0);
+        Map<LottoRank, Integer> counts = new HashMap<>();
+        statistics.forEachRank(counts::put);
+
+        assertThat(counts.get(LottoRank.FIRST)).isEqualTo(0);
+        assertThat(counts.get(LottoRank.SECOND)).isEqualTo(1);
+        assertThat(counts.get(LottoRank.THIRD)).isEqualTo(0);
     }
 
     @Test
@@ -56,11 +64,14 @@ class StatisticsTest {
 
         Statistics statistics = Statistics.calculate(lottos, winningLotto, bonusNumber);
 
-        assertThat(statistics.getCount(LottoRank.FIRST)).isEqualTo(0);
-        assertThat(statistics.getCount(LottoRank.SECOND)).isEqualTo(0);
-        assertThat(statistics.getCount(LottoRank.THIRD)).isEqualTo(0);
-        assertThat(statistics.getCount(LottoRank.FOURTH)).isEqualTo(0);
-        assertThat(statistics.getCount(LottoRank.FIFTH)).isEqualTo(0);
+        Map<LottoRank, Integer> counts = new HashMap<>();
+        statistics.forEachRank(counts::put);
+
+        assertThat(counts.get(LottoRank.FIRST)).isEqualTo(0);
+        assertThat(counts.get(LottoRank.SECOND)).isEqualTo(0);
+        assertThat(counts.get(LottoRank.THIRD)).isEqualTo(0);
+        assertThat(counts.get(LottoRank.FOURTH)).isEqualTo(0);
+        assertThat(counts.get(LottoRank.FIFTH)).isEqualTo(0);
     }
 
     @Test
@@ -76,7 +87,7 @@ class StatisticsTest {
         Statistics statistics = Statistics.calculate(lottos, winningLotto, bonusNumber);
 
         int purchaseAmount = 2 * LOTTO_PRICE;
-        long expectedPrize = LottoRank.FIRST.getPrize();
+        long expectedPrize = LottoRank.FIRST.calculateTotalPrize(1);
         double expectedRate = (double) expectedPrize / purchaseAmount * 100;
 
         assertThat(statistics.calculateReturnRate()).isEqualTo(Math.round(expectedRate * 10.0) / 10.0);
@@ -93,10 +104,12 @@ class StatisticsTest {
 
         Statistics statistics = Statistics.calculate(lottos, winningLotto, bonusNumber);
 
-        assertThat(statistics.getCount(LottoRank.FIFTH)).isEqualTo(1);
-        long totalPrize = LottoRank.FIFTH.getPrize();
-        int purchaseAmount = LOTTO_PRICE;
-        double expectedRate = Math.round((double) totalPrize / purchaseAmount * 100 * 10.0) / 10.0;
+        Map<LottoRank, Integer> counts = new HashMap<>();
+        statistics.forEachRank(counts::put);
+
+        assertThat(counts.get(LottoRank.FIFTH)).isEqualTo(1);
+        long totalPrize = LottoRank.FIFTH.calculateTotalPrize(1);
+        double expectedRate = Math.round((double) totalPrize / LOTTO_PRICE * 100 * 10.0) / 10.0;
 
         assertThat(statistics.calculateReturnRate()).isEqualTo(expectedRate);
     }

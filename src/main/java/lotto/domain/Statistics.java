@@ -46,10 +46,6 @@ public class Statistics {
         return LottoRank.valueOf(matchCount, hasBonus);
     }
 
-    public int getCount(LottoRank rank) {
-        return rankCounts.getOrDefault(rank, 0);
-    }
-
     public double calculateReturnRate() {
         long totalPrize = calculateTotalPrize();
         double rate = (double) totalPrize / purchaseAmount * 100;
@@ -57,9 +53,14 @@ public class Statistics {
         return Math.round(rate * 10.0) / 10.0;
     }
 
+    public void forEachRank(java.util.function.BiConsumer<LottoRank, Integer> action) {
+        List<LottoRank> ranks = List.of(LottoRank.FIFTH, LottoRank.FOURTH, LottoRank.THIRD, LottoRank.SECOND, LottoRank.FIRST);
+        ranks.forEach(rank -> action.accept(rank, rankCounts.getOrDefault(rank, 0)));
+    }
+
     private long calculateTotalPrize() {
         return Stream.of(LottoRank.values())
-                .mapToLong(rank -> rank.getPrize() * rankCounts.get(rank))
+                .mapToLong(rank -> rank.calculateTotalPrize(rankCounts.get(rank)))
                 .sum();
     }
 }

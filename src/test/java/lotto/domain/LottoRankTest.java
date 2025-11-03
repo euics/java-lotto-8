@@ -11,7 +11,7 @@ class LottoRankTest {
     void firstPlace() {
         LottoRank rank = LottoRank.valueOf(6, false);
         assertThat(rank).isEqualTo(LottoRank.FIRST);
-        assertThat(rank.getPrize()).isEqualTo(2_000_000_000L);
+        assertThat(rank.calculateTotalPrize(1)).isEqualTo(2_000_000_000L);
     }
 
     @Test
@@ -19,7 +19,7 @@ class LottoRankTest {
     void secondPlace() {
         LottoRank rank = LottoRank.valueOf(5, true);
         assertThat(rank).isEqualTo(LottoRank.SECOND);
-        assertThat(rank.getPrize()).isEqualTo(30_000_000L);
+        assertThat(rank.calculateTotalPrize(1)).isEqualTo(30_000_000L);
     }
 
     @Test
@@ -27,7 +27,7 @@ class LottoRankTest {
     void thirdPlace() {
         LottoRank rank = LottoRank.valueOf(5, false);
         assertThat(rank).isEqualTo(LottoRank.THIRD);
-        assertThat(rank.getPrize()).isEqualTo(1_500_000L);
+        assertThat(rank.calculateTotalPrize(1)).isEqualTo(1_500_000L);
     }
 
     @Test
@@ -35,7 +35,7 @@ class LottoRankTest {
     void fourthPlace() {
         LottoRank rank = LottoRank.valueOf(4, false);
         assertThat(rank).isEqualTo(LottoRank.FOURTH);
-        assertThat(rank.getPrize()).isEqualTo(50_000L);
+        assertThat(rank.calculateTotalPrize(1)).isEqualTo(50_000L);
     }
 
     @Test
@@ -43,7 +43,7 @@ class LottoRankTest {
     void fifthPlace() {
         LottoRank rank = LottoRank.valueOf(3, false);
         assertThat(rank).isEqualTo(LottoRank.FIFTH);
-        assertThat(rank.getPrize()).isEqualTo(5_000L);
+        assertThat(rank.calculateTotalPrize(1)).isEqualTo(5_000L);
     }
 
     @Test
@@ -51,17 +51,17 @@ class LottoRankTest {
     void none() {
         LottoRank rank = LottoRank.valueOf(2, false);
         assertThat(rank).isEqualTo(LottoRank.NONE);
-        assertThat(rank.getPrize()).isEqualTo(0L);
+        assertThat(rank.calculateTotalPrize(1)).isEqualTo(0L);
     }
 
     @Test
-    @DisplayName("매치 개수를 올바르게 반환한다")
-    void getMatchCount() {
-        assertThat(LottoRank.FIRST.getMatchCount()).isEqualTo(6);
-        assertThat(LottoRank.SECOND.getMatchCount()).isEqualTo(5);
-        assertThat(LottoRank.THIRD.getMatchCount()).isEqualTo(5);
-        assertThat(LottoRank.FOURTH.getMatchCount()).isEqualTo(4);
-        assertThat(LottoRank.FIFTH.getMatchCount()).isEqualTo(3);
+    @DisplayName("등급별 총 당첨금을 올바르게 계산한다")
+    void calculateTotalPrize() {
+        assertThat(LottoRank.FIRST.calculateTotalPrize(1)).isEqualTo(2_000_000_000L);
+        assertThat(LottoRank.SECOND.calculateTotalPrize(2)).isEqualTo(60_000_000L);
+        assertThat(LottoRank.THIRD.calculateTotalPrize(3)).isEqualTo(4_500_000L);
+        assertThat(LottoRank.FOURTH.calculateTotalPrize(4)).isEqualTo(200_000L);
+        assertThat(LottoRank.FIFTH.calculateTotalPrize(5)).isEqualTo(25_000L);
     }
 }
 

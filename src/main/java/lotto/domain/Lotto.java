@@ -2,7 +2,6 @@ package lotto.domain;
 
 import camp.nextstep.edu.missionutils.Randoms;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -65,8 +64,8 @@ public class Lotto {
         return numbers.contains(number);
     }
 
-    public List<Integer> getNumbers() {
-        return Collections.unmodifiableList(numbers);
+    public String format() {
+        return numbers.toString();
     }
 
     public static List<Lotto> generateLottos(int purchaseAmount) {
