@@ -23,8 +23,10 @@ class StatisticsTest {
 
         Statistics statistics = Statistics.calculate(lottos, winningLotto, bonusNumber);
 
-        Map<LottoRank, Integer> counts = new HashMap<>();
-        statistics.forEachRank(counts::put);
+        Map<LottoRank, Integer> counts = statistics.rankOrder().stream()
+                .collect(java.util.stream.Collectors.toMap(
+                        rank -> rank,
+                        statistics::countRank));
 
         assertThat(counts.get(LottoRank.FIRST)).isEqualTo(1);
         assertThat(counts.get(LottoRank.SECOND)).isEqualTo(0);
@@ -44,8 +46,10 @@ class StatisticsTest {
 
         Statistics statistics = Statistics.calculate(lottos, winningLotto, bonusNumber);
 
-        Map<LottoRank, Integer> counts = new HashMap<>();
-        statistics.forEachRank(counts::put);
+        Map<LottoRank, Integer> counts = statistics.rankOrder().stream()
+                .collect(java.util.stream.Collectors.toMap(
+                        rank -> rank,
+                        statistics::countRank));
 
         assertThat(counts.get(LottoRank.FIRST)).isEqualTo(0);
         assertThat(counts.get(LottoRank.SECOND)).isEqualTo(1);
@@ -64,8 +68,10 @@ class StatisticsTest {
 
         Statistics statistics = Statistics.calculate(lottos, winningLotto, bonusNumber);
 
-        Map<LottoRank, Integer> counts = new HashMap<>();
-        statistics.forEachRank(counts::put);
+        Map<LottoRank, Integer> counts = statistics.rankOrder().stream()
+                .collect(java.util.stream.Collectors.toMap(
+                        rank -> rank,
+                        statistics::countRank));
 
         assertThat(counts.get(LottoRank.FIRST)).isEqualTo(0);
         assertThat(counts.get(LottoRank.SECOND)).isEqualTo(0);
@@ -104,8 +110,10 @@ class StatisticsTest {
 
         Statistics statistics = Statistics.calculate(lottos, winningLotto, bonusNumber);
 
-        Map<LottoRank, Integer> counts = new HashMap<>();
-        statistics.forEachRank(counts::put);
+        Map<LottoRank, Integer> counts = statistics.rankOrder().stream()
+                .collect(java.util.stream.Collectors.toMap(
+                        rank -> rank,
+                        statistics::countRank));
 
         assertThat(counts.get(LottoRank.FIFTH)).isEqualTo(1);
         long totalPrize = LottoRank.FIFTH.calculateTotalPrize(1);

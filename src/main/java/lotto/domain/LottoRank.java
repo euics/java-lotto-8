@@ -27,12 +27,11 @@ public enum LottoRank {
                 .orElse(NONE);
     }
 
-    public void format(String rankFormat, String rankWithBonusFormat, int count, java.util.function.Consumer<String> printer) {
+    public String formatRank(String rankFormat, String rankWithBonusFormat, int count) {
         if (this == SECOND) {
-            printer.accept(String.format(rankWithBonusFormat, matchCount, prize, count));
-            return;
+            return String.format(rankWithBonusFormat, matchCount, prize, count);
         }
-        printer.accept(String.format(rankFormat, matchCount, prize, count));
+        return String.format(rankFormat, matchCount, prize, count);
     }
 
     public long calculateTotalPrize(int count) {
